@@ -1,0 +1,6 @@
+npm-debug*
+.idea/
+demo/
+.nyc_output/
+node_modules/
+coverage/

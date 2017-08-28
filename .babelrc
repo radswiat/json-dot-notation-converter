@@ -1,0 +1,11 @@
+{
+  "presets": ["stage-2"],
+  "plugins": [
+    "transform-class-properties",
+    ["istanbul", {
+      "exclude": [
+        "**/*.spec.js"
+      ]
+    }]
+  ]
+}

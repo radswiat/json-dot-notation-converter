@@ -1,0 +1,70 @@
+{
+  "new-default": {
+    "PACKAGES": [
+      {
+        "EXPORT_PACKAGE": {
+          "ID": "EC-STAC",
+          "details": {
+            "contract": {
+
+            }
+          },
+          "with_boxnation": "",
+          "offer_color": "",
+          "channels": "80"
+        },
+        "isRecommended": true,
+        "drawer": "Solus Sim"
+      },
+      {
+        "EXPORT_PACKAGE": {
+          "ID": "EC-STAC",
+          "details": {
+            "contract": {
+
+            }
+          },
+          "with_boxnation": "",
+          "offer_color": "",
+          "channels": "80"
+        },
+        "isRecommended": true,
+        "drawer": "Solus Sim"
+      }
+    ]
+  },
+  "broadband_bb": {
+    "PACKAGES": [
+      {
+        "EXPORT_PACKAGE": {
+          "ID": "EC-STAC",
+          "details": {
+            "contract": {
+
+            }
+          },
+          "with_boxnation": "",
+          "offer_color": "",
+          "channels": "80"
+        },
+        "isRecommended": true,
+        "drawer": "Solus Sim"
+      },
+      {
+        "EXPORT_PACKAGE": {
+          "ID": "EC-STAC",
+          "details": {
+            "contract": {
+
+            }
+          },
+          "with_boxnation": "",
+          "offer_color": "",
+          "channels": "80"
+        },
+        "isRecommended": true,
+        "drawer": "Solus Sim"
+      }
+    ]
+  }
+}

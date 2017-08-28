@@ -1,0 +1,56 @@
+{
+  "name": "json-dot-notation-converter",
+  "version": "0.0.1",
+  "description": "Json dot notation converter",
+  "main": "dist/JsonDotNotationConverter.js",
+  "scripts": {
+    "start": "webpack --config ./webpack/webpack.conf.js",
+    "test": "nyc --stack-size=255000 mocha-webpack --webpack-config ./webpack/webpack.conf.mocha.js \"test/**/*.spec.js\"",
+    "test:watch": "nyc --stack-size=255000 mocha-webpack --webpack-config ./webpack/webpack.conf.mocha.js \"test/**/*.spec.js\" --watch"
+  },
+  "nyc": {
+    "sourceMap": false,
+    "instrument": false,
+    "dist": "./coverage",
+    "fixWebpackSourcePaths": true,
+    "reporter": [
+      "html",
+      "text-summary"
+    ],
+    "exclude": [
+      "**/*.spec.js",
+      "webpack"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/radswiat/json-dot-notation-converter.git"
+  },
+  "author": "Radoslaw Swiat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/radswiat/json-dot-notation-converter/issues"
+  },
+  "homepage": "https://github.com/radswiat/json-dot-notation-converter#readme",
+  "dependencies": {
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-istanbul": "^4.1.4",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-stage-2": "^6.24.1",
+    "chai": "^4.1.1",
+    "eslint": "^4.5.0",
+    "eslint-config-airbnb-base": "^11.3.2",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-import": "^2.7.0",
+    "mocha": "^3.5.0",
+    "mocha-webpack": "^1.0.0-rc.1",
+    "nyc": "^11.1.0",
+    "webpack": "^3.5.5"
+  }
+}
