@@ -9,17 +9,15 @@ Json converter needs 2 things:
 #### Input:
 ```
 {
-  items: [
-    {
-      a: 'London',
-      b: '1500',
-      nested: {
-        a: 'John doe',
-        b: '28',
-        c: 'UK',
-      }
+  items: [{
+    a: 'London',
+    b: '1500',
+    nested: {
+      a: 'John doe',
+      b: '28',
+      c: 'UK',
     }
-  ]
+  }]
 }
 ```
 
@@ -33,7 +31,7 @@ Json converter needs 2 things:
   [
     ['items[].user.a', 'items[].user.name'],
     ['items[].user.b', 'items[].user.age'],
-    ['items[].country', 'items[].user.c'],
+    ['items[].user.c', 'items[].country'],
   ]
 ]
 ```
@@ -44,6 +42,7 @@ Json converter needs 2 things:
   "items": [{
     "city": "London",
     "price": "1500",
+    "country": "UK",
     "user": {
       "name": "John doe",
       "age": "28"
@@ -57,17 +56,15 @@ Json converter needs 2 things:
 import JsonConverter from 'json-dot-notation-converter';
 
 const dataSet = {
-  items: [
-    {
-      a: 'London',
-      b: '1500',
-      nested: {
-        a: 'John doe',
-        b: '28',
-        c: 'UK',
-      }
+  items: [{
+    a: 'London',
+    b: '1500',
+    nested: {
+      a: 'John doe',
+      b: '28',
+      c: 'UK',
     }
-  ]
+  }]
 };
 
 
@@ -82,7 +79,7 @@ const results = converter.convert([
   [
     ['items[].user.a', 'items[].user.name'],
     ['items[].user.b', 'items[].user.age'],
-    ['items[].country', 'items[].user.c'],
+    ['items[].user.c', 'items[].country'],
   ]
 ]);
 
