@@ -2,8 +2,7 @@
 Json converter allows you to rewrite json just before being exported.
 
 ## Basic usage
-#### Where to find
-Instructions for json converter can be defined in the `document management -> edit -> exporting -> converter output`<br>
+
 #### Syntax
 Instruction is a json, with a below syntax:
 ```json
