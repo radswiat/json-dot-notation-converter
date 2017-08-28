@@ -1,6 +1,95 @@
 # Json Converter
 Json converter allows you to rewrite json just before being exported.
 
+## Example & how it works
+Json converter needs 2 things:
+* input data
+* instructions
+
+#### Input:
+```
+{
+  items: [
+    {
+      a: 'London',
+      b: '1500',
+      nested: {
+        a: 'John doe',
+        b: '28',
+        c: 'UK',
+      }
+    }
+  ]
+}
+```
+
+#### Instructions:
+```
+  [
+    ['items[].a', 'items[].city'],
+    ['items[].b', 'items[].price'],
+    ['items[].nested', 'items[].user']
+  ],
+  [
+    ['items[].user.a', 'items[].user.name'],
+    ['items[].user.b', 'items[].user.age'],
+    ['items[].country', 'items[].user.c'],
+  ]
+]
+```
+
+#### Output:
+```
+{
+  "items": [{
+    "city": "London",
+    "price": "1500",
+    "user": {
+      "name": "John doe",
+      "age": "28"
+    }
+  }]
+}
+```
+
+#### Javascript code
+```js
+import JsonConverter from 'json-dot-notation-converter';
+
+const dataSet = {
+  items: [
+    {
+      a: 'London',
+      b: '1500',
+      nested: {
+        a: 'John doe',
+        b: '28',
+        c: 'UK',
+      }
+    }
+  ]
+};
+
+
+const converter = new JsonConverter(dataSet);
+
+const results = converter.convert([
+  [
+    ['items[].a', 'items[].city'],
+    ['items[].b', 'items[].price'],
+    ['items[].nested', 'items[].user']
+  ],
+  [
+    ['items[].user.a', 'items[].user.name'],
+    ['items[].user.b', 'items[].user.age'],
+    ['items[].country', 'items[].user.c'],
+  ]
+]);
+
+console.log(JSON.stringify(results));
+
+```
+
 ## Basic usage
 
 #### Syntax

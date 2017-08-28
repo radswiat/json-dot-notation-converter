@@ -41,7 +41,8 @@ export default class JsonConverter {
     for (const inst of instruction) {
       this._executeInstructions(inst[0], inst[1], inst[2] || []);
     }
-    this.json = merge(this.json, this.output);
+    // this.json = merge(this.json, this.output);
+    this.json = merge(this.output, this.json);
   }
 
   _toLRObject(path) {
