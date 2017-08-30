@@ -1,6 +1,7 @@
 /* global describe, it */
 import { expect } from 'chai';
 import JsonConverter from '../../src/main';
+import chalk from 'chalk';
 
 describe('[test case] => merge', () => {
 
@@ -13,13 +14,22 @@ describe('[test case] => merge', () => {
       sub: {
         a: 'A value',
       }
-    }
+    },
+    arr: [{
+      a: 'A value',
+      sub: {
+        b: 'B value'
+      }
+    }]
   };
 
   const instructions = [
     [
-      ['nested.sub', 'nested'],
+      ['nested.sub', 'nested', ['merge']],
     ],
+    [
+      ['arr[].sub', 'arr[]', ['merge']]
+    ]
   ];
 
   before(() => {
@@ -33,4 +43,9 @@ describe('[test case] => merge', () => {
     expect(results.nested.b).to.be.equal('B value');
   });
 
+  it('instruction [ 2 ] => "arr[].sub" should be merged with "arr[]"', () => {
+    expect(results.arr[0].sub).to.be.undefined;
+    expect(results.arr[0].a).to.be.equal('A value');
+    expect(results.arr[0].b).to.be.equal('B value');
+  });
 });

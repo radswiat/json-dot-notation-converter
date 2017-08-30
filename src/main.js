@@ -2,6 +2,8 @@ import merge from 'lodash/merge';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import unset from 'lodash/unset';
+import chalk from 'chalk';
+import cloneDeep from 'lodash/cloneDeep';
 
 export default class JsonConverter {
 
@@ -13,6 +15,7 @@ export default class JsonConverter {
 
   constructor(json) {
     this.json = json;
+    this.output = cloneDeep(json);
   }
 
   /**
@@ -27,9 +30,7 @@ export default class JsonConverter {
     for (const instruction of instructions) {
       this._handleInstruction(instruction);
     }
-    // merge final output
-    this.output = merge(this.json, this.output);
-    // return
+
     return this._onceFinished();
   }
 
@@ -41,8 +42,6 @@ export default class JsonConverter {
     for (const inst of instruction) {
       this._executeInstructions(inst[0], inst[1], inst[2] || []);
     }
-    // this.json = merge(this.json, this.output);
-    this.json = merge(this.output, this.json);
   }
 
   _toLRObject(path) {
@@ -86,7 +85,7 @@ export default class JsonConverter {
       if (LRStar.lhs.length) {
         return;
       }
-      for (let key in this.json) {
+      for (let key in this.output) {
         if (key !== '_stats' && key !== '_errors') {
           let newLhs = `${key}.${LRStar.rhs.join('.')}`;
           this._executeInstructions(newLhs, rhs, flags, rhsKey, key);
@@ -106,7 +105,7 @@ export default class JsonConverter {
       let LRObject = this._toLRObject(lhs);
       let partialLhsPath = `${LRObject.lhs.join('.')}.${LRObject.arr}`.replace(/^\./, '');
       // lets get the array value, to iterate through it
-      let arrayValue = get(this.json, partialLhsPath);
+      let arrayValue = get(this.output, partialLhsPath);
       for (let key in arrayValue) {
         let lhsPath = `${LRObject.lhs.join('.')}.${LRObject.arr}[${key}].${LRObject.rhs.join('.')}`
           .replace(/^\./, '');
@@ -125,11 +124,11 @@ export default class JsonConverter {
       return;
     }
 
-    let value = get(this.json, lhs);
+    let value = get(this.output, lhs);
 
     // remove original value if copy flag is not set
     if (flags.indexOf('copy') < 0) {
-      unset(this.json, lhs);
+      unset(this.output, lhs);
     }
 
     // fix: if last char is . remove it
@@ -138,6 +137,11 @@ export default class JsonConverter {
     // if lhs is not an array, but rhs is an array,
     // we need to merge before setting
     if (/\]$/.test(rhs) && !/\]$/.test(lhs)) {
+      value = merge(get(this.output, rhs), value);
+    }
+
+    //
+    if (flags.indexOf('merge') >= 0) {
       value = merge(get(this.output, rhs), value);
     }
 
