@@ -1,4 +1,5 @@
-# Json Converter
+# [ JDN ]
+# Json DOT Notation Converter
 Convert JSON / OBJECT by instructions.
 Instructions are string dot notation directives.
 
