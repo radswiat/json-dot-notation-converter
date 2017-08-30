@@ -4,6 +4,7 @@ import set from 'lodash/set';
 import unset from 'lodash/unset';
 import chalk from 'chalk';
 import cloneDeep from 'lodash/cloneDeep';
+import clone from 'lodash/clone';
 
 export default class JsonConverter {
 
@@ -40,7 +41,7 @@ export default class JsonConverter {
    */
   _handleInstruction(instruction) {
     for (const inst of instruction) {
-      this._executeInstructions(inst[0], inst[1], inst[2] || []);
+      this._executeInstructions(inst[0], inst[1], inst[2], inst[3]);
     }
   }
 
@@ -78,7 +79,7 @@ export default class JsonConverter {
     };
   }
 
-  _executeInstructions(lhs, rhs, flags, rhsKey, rhsAnyKey) {
+  _executeInstructions(lhs, rhs, flags = [], flagValue = '', rhsKey, rhsAnyKey) {
 
     if (JsonConverter.HasAnyRegex.test(lhs)) {
       let LRStar = this._toLRAnyStar(lhs);
@@ -88,7 +89,7 @@ export default class JsonConverter {
       for (let key in this.output) {
         if (key !== '_stats' && key !== '_errors') {
           let newLhs = `${key}.${LRStar.rhs.join('.')}`;
-          this._executeInstructions(newLhs, rhs, flags, rhsKey, key);
+          this._executeInstructions(newLhs, rhs, flags, flagValue, rhsKey, key);
         }
       }
       return;
@@ -109,7 +110,7 @@ export default class JsonConverter {
       for (let key in arrayValue) {
         let lhsPath = `${LRObject.lhs.join('.')}.${LRObject.arr}[${key}].${LRObject.rhs.join('.')}`
           .replace(/^\./, '');
-        this._executeInstructions(lhsPath, rhs, flags, key);
+        this._executeInstructions(lhsPath, rhs, flags, flagValue, key);
       }
       return;
     }
@@ -120,7 +121,7 @@ export default class JsonConverter {
       let LRObject = this._toLRObject(rhs);
       let rhsPath = `${LRObject.lhs.join('.')}.${LRObject.arr}[${rhsKey}].${LRObject.rhs.join('.')}`
         .replace(/^\./, '');
-      this._executeInstructions(lhs, rhsPath, flags, rhsKey);
+      this._executeInstructions(lhs, rhsPath, flags, flagValue, rhsKey);
       return;
     }
 
@@ -140,9 +141,23 @@ export default class JsonConverter {
       value = merge(get(this.output, rhs), value);
     }
 
-    //
+    // handle merge flag
     if (flags.indexOf('merge') >= 0) {
       value = merge(get(this.output, rhs), value);
+    }
+
+    // handle math-sum flag
+    if (flags.indexOf('math-sum') >= 0) {
+      let secondValue = get(this.output, rhs);
+      set(this.output, rhs.replace(/([a-zA-Z-]+)$/, flagValue), value + secondValue);
+      return;
+    }
+
+    // handle math-minus flag
+    if (flags.indexOf('math-minus') >= 0) {
+      let secondValue = get(this.output, rhs);
+      set(this.output, rhs.replace(/([a-zA-Z-]+)$/, flagValue), value - secondValue);
+      return;
     }
 
     set(this.output, rhs, value);

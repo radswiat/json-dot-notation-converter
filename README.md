@@ -1,10 +1,8 @@
 # Json Converter
-Json converter allows you to rewrite json just before being exported.
+Convert JSON / OBJECT by instructions.
+Instructions are string dot notation directives.
 
-## Example & how it works
-Json converter needs 2 things:
-* input data
-* instructions
+## Example
 
 #### Input:
 ```
@@ -48,79 +46,6 @@ Json converter needs 2 things:
       "age": "28"
     }
   }]
-}
-```
-
-#### Javascript code
-```js
-import JsonConverter from 'json-dot-notation-converter';
-
-const dataSet = {
-  items: [{
-    a: 'London',
-    b: '1500',
-    nested: {
-      a: 'John doe',
-      b: '28',
-      c: 'UK',
-    }
-  }]
-};
-
-
-const converter = new JsonConverter(dataSet);
-
-const results = converter.convert([
-  [
-    ['items[].a', 'items[].city'],
-    ['items[].b', 'items[].price'],
-    ['items[].nested', 'items[].user']
-  ],
-  [
-    ['items[].user.a', 'items[].user.name'],
-    ['items[].user.b', 'items[].user.age'],
-    ['items[].user.c', 'items[].country'],
-  ]
-]);
-
-console.log(JSON.stringify(results));
-
-```
-
-## Basic usage
-
-#### Syntax
-Instruction is a json, with a below syntax:
-```json
-{
-  "converter": [
-    [
-      ["*.PACKAGES", "*.items"]    
-    ],
-    [
-      ["*.items[].EXPORT_PACKAGE", "*.items[]"]
-    ]
-  ]
-}
-```
-#### Running multiple instructions in order
-Instructions are executed in order. There is a dual execution flow, which means you can run some instructions, and then run another set of instructions on the output of previous instructions.
-```js
-{
-  "converter": [
-    [ // first instructions set, they run against original json
-      ["*.PACKAGES", "*.items"]
-    ],
-    [ // second instructions set, they run against output of first instructions
-      ["*.items[].EXPORT_PACKAGE", "*.items[]"] 
-    ],
-    [ // third instructions set, they run against output of second instructions
-
-    ],
-    [
-      ... // it can go on like this ....
-    ]
-  ]
 }
 ```
 
